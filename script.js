@@ -1,36 +1,65 @@
-function convertImage() {
-    const fileInput = document.getElementById("upload");
-    const format = document.getElementById("format").value;
+const dropArea = document.getElementById("dropArea");
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
 
+dropArea.onclick = () => fileInput.click();
+
+fileInput.addEventListener("change", handleFile);
+
+dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+});
+
+dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    handleFile();
+});
+
+function handleFile() {
     const file = fileInput.files[0];
+    if (!file) return;
 
-    if (!file) {
-        alert("Please upload an image");
-        return;
-    }
-
-    const img = new Image();
     const reader = new FileReader();
 
     reader.onload = function(e) {
-        img.src = e.target.result;
+        preview.src = e.target.result;
+        preview.style.display = "block";
     };
 
     reader.readAsDataURL(file);
+}
+
+function convert() {
+    const file = fileInput.files[0];
+    if (!file) {
+        alert("Upload image first");
+        return;
+    }
+
+    const format = document.getElementById("format").value;
+    const widthInput = document.getElementById("width").value;
+    const quality = document.getElementById("quality").value;
+
+    const img = new Image();
+    img.src = preview.src;
 
     img.onload = function() {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        canvas.width = img.width;
-        canvas.height = img.height;
+        let newWidth = widthInput || img.width;
+        let newHeight = img.height * (newWidth / img.width);
 
-        ctx.drawImage(img, 0, 0);
+        canvas.width = newWidth;
+        canvas.height = newHeight;
 
-        const converted = canvas.toDataURL(format);
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-        const link = document.getElementById("downloadLink");
-        link.href = converted;
+        const output = canvas.toDataURL(format, quality);
+
+        const link = document.getElementById("download");
+        link.href = output;
         link.download = "converted-image";
         link.style.display = "block";
         link.innerText = "Download Image";

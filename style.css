@@ -1,28 +1,50 @@
 body {
-    font-family: Arial;
-    background: #111;
+    background: linear-gradient(135deg, #000, #1a1a1a);
     color: white;
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    background: #111;
+    padding: 30px;
+    border-radius: 15px;
     text-align: center;
+    width: 350px;
+    box-shadow: 0 0 20px #00ffcc;
 }
 
-.container {
-    margin-top: 100px;
+#dropArea {
+    border: 2px dashed #00ffcc;
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
 }
 
-input, select, button {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
+#fileInput {
+    display: none;
+}
+
+#preview {
+    width: 100%;
+    margin-top: 10px;
+    display: none;
+    border-radius: 10px;
 }
 
 button {
+    padding: 10px;
     background: #00ffcc;
     border: none;
+    margin-top: 10px;
     cursor: pointer;
 }
 
 a {
-    display: block;
-    margin-top: 20px;
+    display: none;
+    margin-top: 15px;
     color: yellow;
 }
